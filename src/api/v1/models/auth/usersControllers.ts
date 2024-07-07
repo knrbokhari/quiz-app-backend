@@ -30,7 +30,8 @@ export const register = asyncHandler(async (req: any, res: any) => {
 
   res.status(200).json({
     success: true,
-    message: `Please check your email ${user.email} to complete the verification process`,
+    // message: `Please check your email ${user.email} to complete the verification process`,
+    message: `User Register successful`,
   });
 });
 
@@ -57,7 +58,9 @@ export const login = asyncHandler(async (req: any, res: any) => {
   const user = await loginService({ email, password });
 
   if (user instanceof Error) {
-    return res.status(500).json({ success: true, ...user });
+    console.log(user, "63");
+
+    return res.status(500).json({ success: false });
   }
 
   sendTokenResponse(user, 200, res, "User Login successful");
@@ -70,7 +73,7 @@ export const currentUser = asyncHandler(async (req: any, res: any) => {
   const user = await findUserService(req.user._id);
 
   if (user instanceof Error) {
-    return res.status(500).json({ success: true, ...user });
+    return res.status(500).json({ success: false });
   }
 
   res.status(200).json({ success: true, message: "User Details", user });
@@ -85,7 +88,7 @@ export const updateUser = asyncHandler(async (req: any, res: any) => {
   const user = await updateUserService({ _id, data });
 
   if (user instanceof Error) {
-    return res.status(500).json({ success: true, ...user });
+    return res.status(500).json({ success: false });
   }
 
   res

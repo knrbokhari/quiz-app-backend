@@ -10,7 +10,7 @@ const connectDB = async () => {
     await mongoose.connect(MONGO_DB);
     console.info('DB connected');
   } catch (error) {
-    console.log(error);
+    console.log(error, 'db');
   }
 };
   

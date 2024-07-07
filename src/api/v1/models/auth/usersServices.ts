@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { BadRequest, NotFound } from "../../../../utils/error";
-import sendEmail from "../../../../utils/sendEmail";
+// import sendEmail from "../../../../utils/sendEmail";
 import { Login, Register, UpdateUser } from "./usersInterface";
 import UserModel from "./usersModel";
 import bcrypt from "bcrypt";
@@ -14,31 +14,40 @@ export const registerUserService = async (user: Register) => {
       throw new BadRequest("Email already exists");
     }
 
-    // Generate email verification token
-    const registerToken = JWT.sign({ user }, process.env.JWT_SECRET!, {
-      expiresIn: process.env.JWT_EXPIRE_VERIFICATION,
-    });
+    // // Generate email verification token
+    // const registerToken = JWT.sign({ user }, process.env.JWT_SECRET!, {
+    //   expiresIn: process.env.JWT_EXPIRE_VERIFICATION,
+    // });
 
-    // Determine client host based on environment
-    const host =
-      process.env.NODE_ENV === "prod"
-        ? process.env.CLIENT_HOST
-        : process.env.CLIENT_DEV_HOST;
+    // // Determine client host based on environment
+    // const host =
+    //   process.env.NODE_ENV === "prod"
+    //     ? process.env.CLIENT_HOST
+    //     : process.env.CLIENT_DEV_HOST;
 
-    // Create verification URL
-    const verificationURL = `${host}/verify/${registerToken}`;
+    // // Create verification URL
+    // const verificationURL = `${host}/verify/${registerToken}`;
 
-    // Prepare email message
-    const message = `Please click the link below to complete your signup process:\n\n${verificationURL}`;
+    // // Prepare email message
+    // const message = `Please click the link below to complete your signup process:\n\n${verificationURL}`;
 
-    await sendEmail({
-      email: user.email,
-      name: user.full_name,
-      verificationURL,
-      subject: "Account verification",
-      message,
-      isRegisterMail: true,
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   name: user.full_name,
+    //   verificationURL,
+    //   subject: "Account verification",
+    //   message,
+    //   isRegisterMail: true,
+    // });
+
+    // Generating salt for hashing password;
+    const salt = await bcrypt.genSalt(10);
+
+    // Hashing password before storing for database
+    user.password = await bcrypt.hash(user.password, salt);
+
+    // Call user service method for Storing user data
+    await UserModel.create(user);
 
     return true;
   } catch (error) {
@@ -60,7 +69,7 @@ export const loginService = async (user: Login) => {
     }
 
     return isUser;
-  } catch (error) {
+  } catch (error: any) {
     throw error;
   }
 };

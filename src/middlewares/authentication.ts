@@ -40,7 +40,7 @@ const protect = asyncHandler(async (req: any, res: any, next: NextFunction) => {
 
     next();
   } catch (err) {
-    console.log(err);
+    console.log(err, 'auth');
     return res.status(401).json({ success: false, message: "Invalid token!" });
   }
 });

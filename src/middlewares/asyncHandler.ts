@@ -5,8 +5,8 @@ const asyncHandler = (
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch((error) => {
-      next(error);
-      console.log(error);
+      next(error.message);
+      console.log(error, "asyncHandler");
     });
   };
 };
