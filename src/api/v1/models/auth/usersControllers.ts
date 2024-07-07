@@ -3,8 +3,10 @@ import asyncHandler from "../../../../middlewares/asyncHandler";
 import sendTokenResponse from "../../../../utils/sendTokenResponse";
 import { Login, Register } from "./usersInterface";
 import {
+  findUserService,
   loginService,
   registerUserService,
+  updateUserService,
   verifyUserService,
 } from "./usersServices";
 
@@ -65,7 +67,7 @@ export const login = asyncHandler(async (req: any, res: any) => {
 // @route   POST /api/auth/me
 // @access  Private
 export const currentUser = asyncHandler(async (req: any, res: any) => {
-  const user = {};
+  const user = await findUserService(req.user._id);
 
   if (user instanceof Error) {
     return res.status(500).json({ success: true, ...user });
@@ -80,7 +82,7 @@ export const currentUser = asyncHandler(async (req: any, res: any) => {
 export const updateUser = asyncHandler(async (req: any, res: any) => {
   const { _id } = req.user;
   const data = req.body;
-  const user = {};
+  const user = await updateUserService({ _id, data });
 
   if (user instanceof Error) {
     return res.status(500).json({ success: true, ...user });
@@ -89,56 +91,4 @@ export const updateUser = asyncHandler(async (req: any, res: any) => {
   res
     .status(200)
     .json({ success: true, message: "User update successful", user });
-});
-
-// @desc    Forgot password
-// @route   POST /api/auth/forgot-password
-// @access  Public
-export const forgotPassword = asyncHandler(async (req: any, res: any) => {
-  const { email } = req.body;
-  const user = {};
-
-  if (user instanceof Error) {
-    return res.status(500).json({ success: true, ...user });
-  }
-
-  res.status(200).json({
-    success: true,
-    message: "Password reset link sent to your email",
-  });
-});
-
-// @desc    Reset password
-// @route   POST /api/auth/reset-password/:token
-// @access  Public
-export const resetPassword = asyncHandler(async (req: any, res: any) => {
-  const { token } = req.params;
-  const { password } = req.body;
-  const user = {};
-
-  if (user instanceof Error) {
-    return res.status(500).json({ success: true, ...user });
-  }
-
-  res
-    .status(200)
-    .json({ success: true, message: "Password updated successfully" });
-});
-
-// @desc    Change password
-// @route   POST /api/auth/change-password
-// @access  Private
-export const changePassword = asyncHandler(async (req: any, res: any) => {
-  const { currentPassword, newPassword } = req.body;
-  const { _id } = req.user;
-
-  const user = {};
-
-  if (user instanceof Error) {
-    return res.status(500).json({ success: true, ...user });
-  }
-
-  res
-    .status(200)
-    .json({ success: true, message: "Password updated successfully" });
 });

@@ -17,3 +17,8 @@ export interface Login {
   email: string;
   password: string;
 }
+
+export interface UpdateUser {
+  full_name: string;
+  email: string;
+}

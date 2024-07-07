@@ -3,12 +3,9 @@ import express from "express";
 
 import { authentication } from "../../../../middlewares";
 import {
-  changePassword,
   currentUser,
-  forgotPassword,
   login,
   register,
-  resetPassword,
   updateUser,
   verifyUser,
 } from "./usersControllers";
@@ -22,9 +19,12 @@ router.route("/register").post(register);
 router.route("/verify/:registerToken").get(verifyUser);
 router.route("/me").get(authentication, currentUser);
 router.route("/update").put(authentication, updateUser);
-router.route("/forgot-password").post(forgotPassword);
-router.route("/reset-password/:token").post(resetPassword);
-router.route("/change-password").post(authentication, changePassword);
+
+// Due to time constraints, it is currently not feasible to develop both the UI and this services simultaneously
+
+// router.route("/forgot-password").post(forgotPassword);
+// router.route("/reset-password/:token").post(resetPassword);
+// router.route("/change-password").post(authentication, changePassword);
 
 // Configuring and exporting all routes
 const usersRoutesConfigure = (app: any) => {

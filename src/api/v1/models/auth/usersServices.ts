@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { BadRequest } from "../../../../utils/error";
+import { BadRequest, NotFound } from "../../../../utils/error";
 import sendEmail from "../../../../utils/sendEmail";
-import { Login, Register } from "./usersInterface";
+import { Login, Register, UpdateUser } from "./usersInterface";
 import UserModel from "./usersModel";
 import bcrypt from "bcrypt";
 import JWT from "jsonwebtoken";
@@ -45,6 +45,7 @@ export const registerUserService = async (user: Register) => {
     throw error;
   }
 };
+
 export const loginService = async (user: Login) => {
   try {
     const isUser = await UserModel.findOne({ email: user.email });
@@ -99,6 +100,40 @@ export const verifyUserService = async (token: string) => {
     const newUser = await UserModel.create(decoded.user);
 
     return newUser;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const findUserService = async (_id: string) => {
+  try {
+    // Check if this user exists in the database
+    const user = await UserModel.findById(_id);
+    if (!user) throw new NotFound("User Not Found");
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserService = async ({
+  _id,
+  data,
+}: {
+  _id: string;
+  data: UpdateUser;
+}) => {
+  try {
+    // Check if this user exists in the database
+    const isUser = await UserModel.findById(_id);
+
+    if (!isUser) throw new NotFound("User Not Found");
+
+    // Call user service method for updating user data
+    const user = await UserModel.findByIdAndUpdate(_id, data, { new: true });
+
+    // finally send updated user
+    return user;
   } catch (error) {
     throw error;
   }
