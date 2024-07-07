@@ -12,7 +12,6 @@ import {
 export const createModule = asyncHandler(async (req: any, res: any) => {
   const result = await createModuleService({
     ...req.body,
-    instractor: req.user.id,
     slug: slugCreate(req.body.title),
   });
   if (result instanceof Error) {

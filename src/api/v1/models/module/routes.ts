@@ -8,12 +8,12 @@ const router = express.Router();
 
 // Routes handler
 router.route("/create").post(authentication, createModule);
-router.route("/").get(authentication, getModule);
-router.route("/:moduleId").get(authentication, getSingleModule);
+router.route("/").get(getModule);
+router.route("/:moduleId").get(getSingleModule);
 
 // Configuring and exporting all routes
 const moduleRoutesConfigure = (app: any) => {
-  app.use("/api/module", router);
+  app.use("/api/v1/module", router);
 };
 
 export default moduleRoutesConfigure;

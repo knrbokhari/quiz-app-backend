@@ -7,7 +7,7 @@ import { createQuestion, getQuestion } from "./questionController";
 const router = express.Router();
 
 // Routes handler
-router.route("/create").post(authentication, createQuestion);
+router.route("/create").post(createQuestion);
 router.route("/:moduleId").get(authentication, getQuestion);
 
 // Configuring and exporting all routes

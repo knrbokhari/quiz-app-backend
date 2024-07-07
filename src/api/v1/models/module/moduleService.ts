@@ -31,7 +31,7 @@ export const getModuleService = async () => {
 
 export const getSingleModuleService = async (moduleId: string) => {
   try {
-    const result = await ModuleModel.findById(moduleId).populate({
+    const result = await ModuleModel.findOne({ slug: moduleId }).populate({
       path: "question",
       model: "question",
     });
