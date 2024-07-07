@@ -4,11 +4,12 @@
   "description": "Express.js API with Typescript",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "lint": "eslint --fix src test",
-    "test": "jest"
+    "test": "jest",
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "license": "ISC",
