@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import asyncHandler from "../../../../middlewares/asyncHandler";
 import sendTokenResponse from "../../../../utils/sendTokenResponse";
+import { Register } from "./usersInterface";
+import { registerUserService } from "./usersServices";
 
 // @desc    Register
 // @route   POST /api/auth/register
@@ -37,9 +40,9 @@ export const verifyUser = asyncHandler(async (req: any, res: any) => {
 // @route   POST /api/auth/login
 // @access  Public
 export const login = asyncHandler(async (req: any, res: any) => {
-  const { email, password } = req.body;
+  const { email, password, full_name }: Register = req.body;
 
-  const user: any = {};
+  const user = registerUserService({ email, password, full_name });
 
   if (user instanceof Error) {
     return res.status(500).json({ success: true, ...user });

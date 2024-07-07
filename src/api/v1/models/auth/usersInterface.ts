@@ -6,3 +6,14 @@ export interface IUser {
   resetPasswordToken: string;
   resetPasswordExpires: string;
 }
+
+export interface Register {
+  full_name: string;
+  email: string;
+  password: string;
+}
+
+export interface LOgin {
+  email: string;
+  password: string;
+}
