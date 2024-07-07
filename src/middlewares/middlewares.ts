@@ -1,8 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
-import { ZodError } from 'zod';
+import { NextFunction, Request, Response } from "express";
+import { ZodError } from "zod";
 
-import ErrorResponse from '../interfaces/ErrorResponse';
-import RequestValidators from '../interfaces/RequestValidators';
+import ErrorResponse from "../interfaces/ErrorResponse";
+import RequestValidators from "../interfaces/RequestValidators";
+import { GeneralError } from "../utils/error";
 
 export function validateRequest(validators: RequestValidators) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -39,10 +40,16 @@ export function errorHandler(
   res: Response<ErrorResponse>,
   // next: NextFunction,
 ) {
+  if (err instanceof GeneralError) {
+    const code = err.getCode();
+
+    return res.status(code).json({ message: err.message });
+  }
+
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(statusCode);
   res.json({
     message: err.message,
-    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
+    stack: process.env.NODE_ENV === "production" ? "🥞" : err.stack,
   });
 }

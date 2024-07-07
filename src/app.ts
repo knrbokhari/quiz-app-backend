@@ -4,7 +4,7 @@ import helmet from "helmet";
 import cors from "cors";
 
 import * as middlewares from "./middlewares/middlewares";
-import configure from "./routes";
+import configure from "./api/routes";
 import MessageResponse from "./interfaces/MessageResponse";
 
 require("dotenv").config();
@@ -26,5 +26,9 @@ configure(app);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
+
+app.all("*", (req, res) => {
+  res.status(404).json({ success: false, message: "Route not found" });
+});
 
 export default app;
