@@ -22,7 +22,7 @@ const questionSchema = new mongoose.Schema(
         id: {
           type: Number,
         },
-        options: {
+        option: {
           type: String,
         },
         // answer: {
@@ -45,7 +45,7 @@ const questionSchema = new mongoose.Schema(
 
   {
     timestamps: true,
-  },
+  }
 );
 
 const QuestionModel = mongoose.model<UserDocument>("question", questionSchema);

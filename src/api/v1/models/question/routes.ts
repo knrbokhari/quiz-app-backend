@@ -8,11 +8,11 @@ const router = express.Router();
 
 // Routes handler
 router.route("/create").post(createQuestion);
-router.route("/:moduleId").get(authentication, getQuestion);
+router.route("/:moduleId").get(getQuestion);
 
 // Configuring and exporting all routes
 const questionRoutesConfigure = (app: any) => {
-  app.use("/api/question", router);
+  app.use("/api/v1/question", router);
 };
 
 export default questionRoutesConfigure;
