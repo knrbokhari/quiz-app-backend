@@ -13,7 +13,7 @@ export interface Register {
   password: string;
 }
 
-export interface LOgin {
+export interface Login {
   email: string;
   password: string;
 }

@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import asyncHandler from "../../../../middlewares/asyncHandler";
 import sendTokenResponse from "../../../../utils/sendTokenResponse";
-import { Register } from "./usersInterface";
-import { registerUserService } from "./usersServices";
+import { Login, Register } from "./usersInterface";
+import {
+  loginService,
+  registerUserService,
+  verifyUserService,
+} from "./usersServices";
 
 // @desc    Register
 // @route   POST /api/auth/register
 // @access  Public
 export const register = asyncHandler(async (req: any, res: any) => {
-  const isSuccess = {};
+  const { email, password, full_name }: Register = req.body;
 
-  if (isSuccess instanceof Error) {
+  const user: any = await registerUserService({
+    email,
+    password,
+    full_name,
+  });
+
+  if (user instanceof Error) {
     return res
       .status(500)
       .json({ success: false, message: "Something went wrong" });
@@ -18,7 +28,7 @@ export const register = asyncHandler(async (req: any, res: any) => {
 
   res.status(200).json({
     success: true,
-    message: `Please check your email ${req.body.email} to complete the verification process`,
+    message: `Please check your email ${user.email} to complete the verification process`,
   });
 });
 
@@ -27,7 +37,7 @@ export const register = asyncHandler(async (req: any, res: any) => {
 // @access  Public
 export const verifyUser = asyncHandler(async (req: any, res: any) => {
   const token = req.params.registerToken;
-  const user = {};
+  const user = await verifyUserService(token);
 
   if (user instanceof Error) {
     return res.status(500).json({ success: false, ...user });
@@ -40,9 +50,9 @@ export const verifyUser = asyncHandler(async (req: any, res: any) => {
 // @route   POST /api/auth/login
 // @access  Public
 export const login = asyncHandler(async (req: any, res: any) => {
-  const { email, password, full_name }: Register = req.body;
+  const { email, password }: Login = req.body;
 
-  const user = registerUserService({ email, password, full_name });
+  const user = await loginService({ email, password });
 
   if (user instanceof Error) {
     return res.status(500).json({ success: true, ...user });
