@@ -5,8 +5,10 @@ import resourceRoutesConfigure from "./resourceRouthes";
 import apiPermissionRoutesConfigure from "./apiPermissionRouthes";
 import clientPermissionRoutesConfigure from "./clientPermissionRouthes";
 import categoryRoutesConfigure from "./categoryRouthes";
+import userRoutesConfigure from "./userRoute";
 
 const configure = (app: Express) => {
+  userRoutesConfigure(app);
   authRoutesConfigure(app);
   categoryRoutesConfigure(app);
   roleRoutesConfigure(app);

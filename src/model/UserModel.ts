@@ -2,16 +2,16 @@ import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { IRole } from "./RoleModel";
 
-interface IUser extends Document {
+export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
   role: mongoose.Types.ObjectId | IRole;
   created_at: Date;
-  resetPasswordToken?: string;
-  resetPasswordExpires?: Date;
+  resetPasswordToken?: string | null;
+  resetPasswordExpires?: Date | null;
   otp?: string;
-  expireOtp?: Date;
+  expireOtp?: number | Date;
   isVerified: boolean;
   adminApprove: boolean;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -76,6 +76,17 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+userSchema.set("toJSON", {
+  transform: (doc, ret) => {
+    delete ret.otp;
+    delete ret.expireOtp;
+    delete ret.password;
+    delete ret.resetPasswordToken;
+    delete ret.resetPasswordExpires;
+    return ret;
+  },
+});
+
 // Method to compare passwords
 userSchema.methods.comparePassword = async function (
   candidatePassword: string,
@@ -84,6 +95,6 @@ userSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, user.password);
 };
 
-const UserModal = mongoose.model<IUser>("User", userSchema);
+const UserModel = mongoose.model<IUser>("User", userSchema);
 
-export default UserModal;
+export default UserModel;
