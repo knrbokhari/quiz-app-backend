@@ -1,14 +1,19 @@
 import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+import { IRole } from "./RoleModel";
 
 interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  role: "admin" | "user" | "hr";
+  role: mongoose.Types.ObjectId | IRole;
   created_at: Date;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  otp?: string;
+  expireOtp?: Date;
+  isVerified: boolean;
+  adminApprove: boolean;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -17,26 +22,48 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
     unique: true,
+    trim: true,
   },
   email: {
     type: String,
+    required: true,
     unique: true,
+    trim: true,
+    lowercase: true,
   },
   password: {
     type: String,
     required: true,
   },
   role: {
-    type: String,
-    enum: ["admin", "user", "hr"],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Role",
     required: true,
   },
   created_at: {
     type: Date,
     default: Date.now,
   },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
+  otp: {
+    type: String,
+  },
+  expireOtp: {
+    type: Date,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  adminApprove: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Password hashing middleware
