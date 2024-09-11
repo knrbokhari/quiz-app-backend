@@ -26,6 +26,6 @@ const ResourceSchema = new Schema<IResource>(
   },
 );
 
-const Resource = mongoose.model<IResource>("Resource", ResourceSchema);
+const ResourceModel = mongoose.model<IResource>("Resource", ResourceSchema);
 
-export default Resource;
+export default ResourceModel;

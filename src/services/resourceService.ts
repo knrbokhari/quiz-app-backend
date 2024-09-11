@@ -1,10 +1,10 @@
 import { FindParams } from "../interface/user.interface";
-import RoleModel from "../model/RoleModel";
+import ResourceModel from "../model/ResourceModel";
 import { BadRequest, NotFound } from "../utils/error";
 import { createSlug } from "../utils/slugHelper";
 
-// Service to get all roles
-export const getAllRolesService = async (query: FindParams) => {
+// Service to get all resources
+export const getAllResourcesService = async (query: FindParams) => {
   try {
     const {
       page = 1,
@@ -14,13 +14,13 @@ export const getAllRolesService = async (query: FindParams) => {
       sortOrder = "desc",
     } = query;
 
-    const total = await RoleModel.countDocuments();
+    const total = await ResourceModel.countDocuments();
 
     if (Math.ceil(total / limit) < page || page <= 0) {
       throw new Error("Invalid page number."); //  Please provide a valid page number within the available range.
     }
 
-    const data = await RoleModel.find()
+    const data = await ResourceModel.find()
       .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 })
       .skip((page - 1) * limit)
       .limit(limit)
@@ -40,13 +40,13 @@ export const getAllRolesService = async (query: FindParams) => {
   }
 };
 
-// Service to get role by slug
-export const getRoleBySlugService = async (slug: string) => {
+// Service to get resource by slug
+export const getResourceBySlugService = async (slug: string) => {
   try {
-    const isFound = await RoleModel.findOne({ slug: slug });
+    const isFound = await ResourceModel.findOne({ slug: slug });
 
     if (!isFound) {
-      throw new BadRequest("Role not found!");
+      throw new BadRequest("Resource not found!");
     }
 
     return isFound;
@@ -55,37 +55,37 @@ export const getRoleBySlugService = async (slug: string) => {
   }
 };
 
-// Service to create a new role
-export const createRoleService = async (data: { name: string }) => {
+// Service to create a new resource
+export const createResourceService = async (data: { name: string }) => {
   try {
     const slug = createSlug(data.name);
-    const isFound = await RoleModel.findOne({ slug });
+    const isFound = await ResourceModel.findOne({ slug });
 
     if (isFound) {
-      throw new BadRequest("Role with this slug already exists");
+      throw new BadRequest("Resource with this slug already exists");
     }
 
-    const role = await RoleModel.create({
+    const resource = await ResourceModel.create({
       name: data.name,
       slug: slug,
     });
 
-    return role;
+    return resource;
   } catch (error) {
     throw error;
   }
 };
 
-// Service to update a role by slug
-export const updateRoleService = async (
+// Service to update a resource by slug
+export const updateResourceService = async (
   slug: string,
   data: { name?: string },
 ) => {
   try {
-    const isFound = await RoleModel.findOne({ slug });
+    const isFound = await ResourceModel.findOne({ slug });
 
     if (!isFound) {
-      throw new NotFound("Role not found");
+      throw new NotFound("Resource not found");
     }
 
     const updatedData: { name?: string; slug?: string } = {};
@@ -95,15 +95,17 @@ export const updateRoleService = async (
       updatedData.slug = createSlug(data.name);
     }
 
-    const existingRole = await RoleModel.findOne({ slug: updatedData.slug });
+    const existingResource = await ResourceModel.findOne({
+      slug: updatedData.slug,
+    });
 
-    if (existingRole && existingRole.slug !== slug) {
+    if (existingResource && existingResource.slug !== slug) {
       throw new BadRequest(
-        `Role with this slug "${updatedData.slug}" already exists`,
+        `Resource with this slug "${updatedData.slug}" already exists`,
       );
     }
 
-    const update = await RoleModel.findOneAndUpdate({ slug }, updatedData, {
+    const update = await ResourceModel.findOneAndUpdate({ slug }, updatedData, {
       new: true,
       //   runValidators: true,
     });
@@ -114,16 +116,16 @@ export const updateRoleService = async (
   }
 };
 
-// Service to delete a role by slug
-export const deleteRoleService = async (slug: string) => {
+// Service to delete a resource by slug
+export const deleteResourceService = async (slug: string) => {
   try {
-    const isRole = await RoleModel.findOne({ slug });
+    const isResource = await ResourceModel.findOne({ slug });
 
-    if (!isRole) {
-      throw new NotFound("Role not found");
+    if (!isResource) {
+      throw new NotFound("resource not found");
     }
 
-    const deleted = await RoleModel.findByIdAndDelete(isRole?.id);
+    const deleted = await ResourceModel.findByIdAndDelete(isResource?.id);
 
     return deleted;
   } catch (error) {
