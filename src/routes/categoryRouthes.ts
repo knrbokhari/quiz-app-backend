@@ -1,6 +1,7 @@
 import { Router, Express } from "express";
 import {
   CreateCategory,
+  DeleteCategory,
   findAllCategory,
   findCategoryBySlug,
   UpdateCategory,
@@ -13,7 +14,7 @@ router.get("/", findAllCategory);
 router.get("/:slug", findCategoryBySlug);
 router.post("/create", authenticateRequest, CreateCategory);
 router.put("/update/:id", authenticateRequest, UpdateCategory);
-router.delete("/delete");
+router.delete("/delete", authenticateRequest, DeleteCategory);
 
 const categoryRoutesConfigure = (app: Express) => {
   app.use("/api/category", router);

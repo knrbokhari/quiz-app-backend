@@ -1,6 +1,7 @@
 import asyncHandler from "../middlewares/asyncHandler";
 import {
   CreateCategoryService,
+  DeleteCategoryService,
   findAllCategoryService,
   findCategoryBySlugService,
   UpdateCategoryService,
@@ -62,5 +63,18 @@ export const UpdateCategory = asyncHandler(async (req, res) => {
     success: true,
     message: "Category updated successfully",
     data: result,
+  });
+});
+
+// @desc Delete a category
+export const DeleteCategory = asyncHandler(async (req, res) => {
+  const result = await DeleteCategoryService(req.params.id);
+  if (result instanceof Error) {
+    throw result;
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Category Deleted successfully",
   });
 });

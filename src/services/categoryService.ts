@@ -114,3 +114,19 @@ export const UpdateCategoryService = async ({
     throw error;
   }
 };
+
+export const DeleteCategoryService = async (id: string) => {
+  try {
+    const category = await CategoryModel.findById(id);
+
+    if (!category) {
+      throw new NotFound("Category not found");
+    }
+
+    const deleted = await CategoryModel.findByIdAndDelete(id);
+
+    return {};
+  } catch (error) {
+    throw error;
+  }
+};
