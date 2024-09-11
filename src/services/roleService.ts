@@ -114,10 +114,10 @@ export const updateRoleService = async (
   }
 };
 
-// Service to delete a role by slug
-export const deleteRoleService = async (slug: string) => {
+// Service to delete a role by id
+export const deleteRoleService = async (id: string) => {
   try {
-    const isRole = await RoleModel.findOne({ slug });
+    const isRole = await RoleModel.findById(id);
 
     if (!isRole) {
       throw new NotFound("Role not found");

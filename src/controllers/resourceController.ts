@@ -70,7 +70,7 @@ export const updateResource = asyncHandler(
 
 export const deleteResource = asyncHandler(
   async (req: Request, res: Response) => {
-    const result = await deleteResourceService(req.params.slug);
+    const result = await deleteResourceService(req.params.id);
     if (result instanceof Error) {
       throw result;
     }

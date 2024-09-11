@@ -63,7 +63,7 @@ export const updateRole = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const deleteRole = asyncHandler(async (req: Request, res: Response) => {
-  const result = await deleteRoleService(req.params.slug);
+  const result = await deleteRoleService(req.params.id);
   if (result instanceof Error) {
     throw result;
   }

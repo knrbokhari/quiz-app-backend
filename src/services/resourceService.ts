@@ -116,10 +116,10 @@ export const updateResourceService = async (
   }
 };
 
-// Service to delete a resource by slug
-export const deleteResourceService = async (slug: string) => {
+// Service to delete a resource by id
+export const deleteResourceService = async (id: string) => {
   try {
-    const isResource = await ResourceModel.findOne({ slug });
+    const isResource = await ResourceModel.findById(id);
 
     if (!isResource) {
       throw new NotFound("resource not found");

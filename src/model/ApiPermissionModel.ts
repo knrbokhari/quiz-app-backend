@@ -37,9 +37,9 @@ const ApiPermissionSchema = new Schema<IApiPermission>(
   },
 );
 
-const ApiPermission = mongoose.model<IApiPermission>(
+const ApiPermissionModel = mongoose.model<IApiPermission>(
   "ApiPermission",
   ApiPermissionSchema,
 );
 
-export default ApiPermission;
+export default ApiPermissionModel;

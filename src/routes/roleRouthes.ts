@@ -14,7 +14,7 @@ router.get("/", authenticateRequest, getAllRoles);
 router.get("/:slug", authenticateRequest, getRoleBySlug);
 router.post("/create", authenticateRequest, createRole);
 router.put("/update/:slug", authenticateRequest, updateRole);
-router.delete("/delete", authenticateRequest, deleteRole);
+router.delete("/delete/:id", authenticateRequest, deleteRole);
 
 const roleRoutesConfigure = (app: Express) => {
   app.use("/api/roles", router);
