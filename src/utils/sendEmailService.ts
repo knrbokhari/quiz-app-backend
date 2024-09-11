@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import EmailOptions from "../intergaces/email.interface";
+import EmailOptions from "../interface/email.interface";
 
 const sendEmailService = async (options: EmailOptions) => {
   const transporter = nodemailer.createTransport({

@@ -10,7 +10,7 @@ import {
   UserLogin,
   UserRegister,
   VerifyOtp,
-} from "../intergaces/user.interface";
+} from "../interface/user.interface";
 
 export const registerUserService = async (user: UserRegister) => {
   try {

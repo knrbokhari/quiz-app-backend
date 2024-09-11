@@ -1,8 +1,9 @@
-import { FindParams } from "../intergaces/user.interface";
+import { FindParams } from "../interface/user.interface";
 import CategoryModel from "../model/CategoryModel";
 import { BadRequest } from "../utils/error";
+import { createSlug } from "../utils/slugHelper";
 
-export const findAllCatagoryService = async (query: FindParams) => {
+export const findAllCategoryService = async (query: FindParams) => {
   const {
     page = 1,
     limit = 10,
@@ -38,7 +39,7 @@ export const findAllCatagoryService = async (query: FindParams) => {
   }
 };
 
-export const findCatagoryBySlugService = async (slug: string) => {
+export const findCategoryBySlugService = async (slug: string) => {
   try {
     const isFound = await CategoryModel.findOne({ slug: slug });
 
@@ -47,6 +48,27 @@ export const findCatagoryBySlugService = async (slug: string) => {
     }
 
     return isFound;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const CreateCategoryService = async ({ name }: CategoryData) => {
+  try {
+    const slug = createSlug(name);
+
+    const isFound = await CategoryModel.findOne({ slug: slug });
+
+    if (isFound) {
+      throw new BadRequest("Category is already exist");
+    }
+
+    const category = await CategoryModel.create({
+      name,
+      slug,
+    });
+
+    return category;
   } catch (error) {
     throw error;
   }

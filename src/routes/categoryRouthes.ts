@@ -1,15 +1,17 @@
 import { Router, Express } from "express";
 import {
-  findAllCatagory,
-  findCatagoryBySlug,
+  CreateCategory,
+  findAllCategory,
+  findCategoryBySlug,
 } from "../controllers/categoryController";
+import authenticateRequest from "../middlewares/authenticate";
 
 const router = Router();
 
-router.get("/", findAllCatagory);
-router.get("/:slug", findCatagoryBySlug);
-router.post("/create");
-router.put("/update/:slug");
+router.get("/", findAllCategory);
+router.get("/:slug", findCategoryBySlug);
+router.post("/create", authenticateRequest, CreateCategory);
+router.put("/update/:id");
 router.delete("/delete");
 
 const categoryRoutesConfigure = (app: Express) => {
