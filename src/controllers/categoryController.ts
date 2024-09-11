@@ -42,7 +42,7 @@ export const CreateCategory = asyncHandler(async (req, res) => {
     throw result;
   }
 
-  res.status(200).json({
+  res.status(201).json({
     success: true,
     message: "Category created successfully",
     data: result,

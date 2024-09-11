@@ -125,7 +125,7 @@ export const DeleteCategoryService = async (id: string) => {
 
     const deleted = await CategoryModel.findByIdAndDelete(id);
 
-    return {};
+    return deleted;
   } catch (error) {
     throw error;
   }
