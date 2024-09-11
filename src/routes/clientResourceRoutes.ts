@@ -16,8 +16,8 @@ router.post("/create", authenticateRequest, createClientResource);
 router.put("/update/:slug", authenticateRequest, updateClientResource);
 router.delete("/delete/:id", authenticateRequest, deleteClientResource);
 
-const resourceRoutesConfigure = (app: Express) => {
+const clientResourceRoutesConfigure = (app: Express) => {
   app.use("/api/client-resource", router);
 };
 
-export default resourceRoutesConfigure;
+export default clientResourceRoutesConfigure;

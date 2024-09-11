@@ -1,11 +1,12 @@
 import { Express } from "express";
-import authRoutesConfigure from "./authRouthes";
-import roleRoutesConfigure from "./roleRouthes";
-import resourceRoutesConfigure from "./resourceRouthes";
-import apiPermissionRoutesConfigure from "./apiPermissionRouthes";
-import clientPermissionRoutesConfigure from "./clientPermissionRouthes";
-import categoryRoutesConfigure from "./categoryRouthes";
+import authRoutesConfigure from "./authRoutes";
+import roleRoutesConfigure from "./roleRoutes";
+import resourceRoutesConfigure from "./resourceRoutes";
+import apiPermissionRoutesConfigure from "./apiPermissionRoutes";
+import clientPermissionRoutesConfigure from "./clientPermissionRoutes";
+import categoryRoutesConfigure from "./categoryRoutes";
 import userRoutesConfigure from "./userRoute";
+import clientResourceRoutesConfigure from "./clientResourceRoutes";
 
 const configure = (app: Express) => {
   userRoutesConfigure(app);
@@ -13,6 +14,7 @@ const configure = (app: Express) => {
   categoryRoutesConfigure(app);
   roleRoutesConfigure(app);
   resourceRoutesConfigure(app);
+  clientResourceRoutesConfigure(app);
   apiPermissionRoutesConfigure(app);
   clientPermissionRoutesConfigure(app);
 };
