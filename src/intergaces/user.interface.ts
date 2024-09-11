@@ -28,7 +28,7 @@ export interface ResetPassword {
   newPassword: string;
 }
 
-export interface FindUserParams {
+export interface FindParams {
   page?: number;
   limit?: number;
   search?: string;

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import generateOtp from "../utils/generateOtp";
 import {
   ChangePassword,
-  FindUserParams,
+  FindParams,
   ForgotPassword,
   ResetPassword,
   UserLogin,
@@ -300,7 +300,7 @@ export const resetPasswordService = async ({
   }
 };
 
-export const findUserService = async (params: FindUserParams) => {
+export const findUserService = async (params: FindParams) => {
   const {
     page = 1,
     limit = 10,

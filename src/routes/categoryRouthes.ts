@@ -1,8 +1,9 @@
 import { Router, Express } from "express";
+import { findAllCatagory } from "../controllers/categoryController";
 
 const router = Router();
 
-router.get("/");
+router.get("/", findAllCatagory);
 router.get("/:slug");
 router.post("/create");
 router.put("/update/:slug");
