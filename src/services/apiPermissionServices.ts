@@ -97,13 +97,11 @@ export const updatePermissionServices = async (id: string, data: any) => {
     }
 
     const isExistRole = await RoleModel.findById(data.role);
-
     if (!isExistRole) {
       throw new Error("Role not found.");
     }
 
     const isExistResource = await ResourceModel.findById(data.resource);
-
     if (!isExistResource) {
       throw new Error("Resource not found.");
     }

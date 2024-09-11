@@ -17,7 +17,7 @@ const ClientPermissionSchema = new Schema<IClientPermission>(
     },
     resource: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Resource",
+      ref: "ClientResource",
       required: true,
     },
     access: {
@@ -31,9 +31,9 @@ const ClientPermissionSchema = new Schema<IClientPermission>(
   },
 );
 
-const ClientPermission = mongoose.model<IClientPermission>(
+const ClientPermissionModel = mongoose.model<IClientPermission>(
   "ClientPermission",
   ClientPermissionSchema,
 );
 
-export default ClientPermission;
+export default ClientPermissionModel;
