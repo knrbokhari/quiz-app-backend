@@ -3,6 +3,7 @@ import {
   CreateCategoryService,
   findAllCategoryService,
   findCategoryBySlugService,
+  UpdateCategoryService,
 } from "../services/categoryService";
 
 // @desc  find all category list
@@ -43,6 +44,23 @@ export const CreateCategory = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Category created successfully",
+    data: result,
+  });
+});
+
+// @desc Update a category
+export const UpdateCategory = asyncHandler(async (req, res) => {
+  const result = await UpdateCategoryService({
+    id: req.params.id,
+    name: req.body.name,
+  });
+  if (result instanceof Error) {
+    throw result;
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Category updated successfully",
     data: result,
   });
 });

@@ -1,6 +1,6 @@
 import { FindParams } from "../interface/user.interface";
 import CategoryModel from "../model/CategoryModel";
-import { BadRequest } from "../utils/error";
+import { BadRequest, NotFound } from "../utils/error";
 import { createSlug } from "../utils/slugHelper";
 
 export const findAllCategoryService = async (query: FindParams) => {
@@ -69,6 +69,47 @@ export const CreateCategoryService = async ({ name }: CategoryData) => {
     });
 
     return category;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const UpdateCategoryService = async ({
+  id,
+  name,
+}: UpdateCategoryData) => {
+  try {
+    const category = await CategoryModel.findById(id);
+
+    if (!category) {
+      throw new NotFound("Category not found");
+    }
+
+    let updatedData: { name?: string; slug?: string } = {};
+
+    if (name) {
+      updatedData.name = name;
+      updatedData.slug = createSlug(name);
+    }
+
+    const isFound = await CategoryModel.findOne({ slug: updatedData?.slug });
+
+    if (isFound) {
+      throw new BadRequest(
+        `Category with slug "${updatedData.slug}" already exists`,
+      );
+    }
+
+    const updatedCategory = await CategoryModel.findByIdAndUpdate(
+      id,
+      updatedData,
+      {
+        new: true,
+        // runValidators: true,
+      },
+    );
+
+    return updatedCategory;
   } catch (error) {
     throw error;
   }
